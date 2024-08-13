@@ -5,6 +5,7 @@
 package com.mycompany.gestorcc.frontend;
 
 import com.mycompany.gestorcc.backend.ArchivoEntrada;
+import com.mycompany.gestorcc.backend.Gestion;
 
 /**
  *
