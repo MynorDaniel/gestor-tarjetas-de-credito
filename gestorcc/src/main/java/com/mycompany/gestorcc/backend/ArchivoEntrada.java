@@ -9,23 +9,24 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- *
+ * Clase que maneja el archivo de entrada y devuelve las instrucciones ordenadas.
  * @author mynordma
  */
 public class ArchivoEntrada {
     
     private final String pathEntrada;
     private final String[] lineas = new String[10];
-    List<String[]> instrucciones = new ArrayList<>();
-    
-    public ArchivoEntrada(String pathEntrada){
-        this.pathEntrada = pathEntrada;
+    private final List<String[]> instrucciones = new ArrayList<>();
+
+    public List<String[]> getInstrucciones() {
+        return instrucciones;
     }
     
+    /**
+     * Lee el contenido del archivo en el path especificado.
+     */
     public void leerContenido() {
         try (BufferedReader br = new BufferedReader(new FileReader(pathEntrada))) {
             int index = 0;
@@ -40,8 +41,11 @@ public class ArchivoEntrada {
         imprimirElementos(instrucciones);
     }
     
-   
-    
+    /**
+     * Toma una frase y la separa en instruccion y parametros.
+     * @param frase
+     * @return String[]
+     */
     private String[] separarLinea(String frase) {
         int indiceParentesis = frase.indexOf('(');
         
@@ -67,7 +71,11 @@ public class ArchivoEntrada {
         
         return resultado;
     }
-
+    
+    public ArchivoEntrada(String pathEntrada){
+        this.pathEntrada = pathEntrada;
+    }
+    
     public static void imprimirElementos(List<String[]> listaDeArreglos) {
         for (int i = 0; i < listaDeArreglos.size(); i++) {
             System.out.println("Arreglo " + i + ":");
