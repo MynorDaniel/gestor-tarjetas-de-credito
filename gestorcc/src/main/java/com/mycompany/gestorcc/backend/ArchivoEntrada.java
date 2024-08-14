@@ -38,7 +38,7 @@ public class ArchivoEntrada {
             e.printStackTrace();
         }
         
-        imprimirElementos(instrucciones);
+        //imprimirElementos(instrucciones);
     }
     
     /**

@@ -64,6 +64,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         
         ArchivoEntrada archivo = new ArchivoEntrada(jFileChooser1.getSelectedFile().getAbsolutePath());
         archivo.leerContenido();
+        Gestion gestion;
+        for (int i = 0; i < archivo.getInstrucciones().size(); i++){
+            gestion = new Gestion(archivo.getInstrucciones().get(i));
+        }
     }//GEN-LAST:event_jFileChooser1ActionPerformed
 
 
