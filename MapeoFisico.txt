@@ -1,0 +1,49 @@
+CREATE SCHEMA REGISTROS_TARJETAS;
+USE REGISTROS_TARJETAS;
+CREATE TABLE tarjeta (
+    numero VARCHAR(18),
+    fecha DATE NOT NULL,
+    limite DECIMAL(15, 2) NOT NULL,
+    tipo VARCHAR(15) NOT NULL,
+    interes DECIMAL(15, 2) NOT NULL,
+    monto DECIMAL(15, 2) NOT NULL,
+    saldo DECIMAL(15,2) NOT NULL,
+    estado VARCHAR(11) NOT NULL,
+    CONSTRAINT pk_tarjeta PRIMARY KEY (numero)
+);
+CREATE TABLE cliente (
+    id INT AUTO_INCREMENT,
+    numero_tarjeta VARCHAR(18),
+    salario DECIMAL(15,2) NOT NULL,
+    direccion VARCHAR(50) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    CONSTRAINT pk_cliente PRIMARY KEY (id),
+    CONSTRAINT fk_tarjeta_in_numero_tarjeta FOREIGN KEY (numero_tarjeta) REFERENCES tarjeta(numero)
+);
+CREATE TABLE solicitud (
+    numero_solicitud INT,
+    numero_tarjeta VARCHAR(18),
+    estado VARCHAR(10) NOT NULL,
+    fecha DATE NOT NULL,
+    CONSTRAINT pk_solicitud PRIMARY KEY (numero_solicitud),
+    CONSTRAINT fk_solicitud_numero_tarjeta FOREIGN KEY (numero_tarjeta) REFERENCES tarjeta(numero)
+);
+CREATE TABLE movimiento (
+    id INT AUTO_INCREMENT,
+    numero_tarjeta VARCHAR(18),
+    descripcion TEXT,
+    fecha DATE NOT NULL,
+    monto DECIMAL(15,2) NOT NULL,
+    tipo VARCHAR(8) NOT NULL,
+    establecimiento VARCHAR(50) NOT NULL,
+    CONSTRAINT pk_movimiento PRIMARY KEY (id),
+    CONSTRAINT fk_movimiento_numero_tarjeta FOREIGN KEY (numero_tarjeta) REFERENCES tarjeta(numero)
+);
+CREATE TABLE tarjeta_movimiento (
+    numero_tarjeta VARCHAR(18),
+    id_movimiento INT,
+    CONSTRAINT pk_tarjeta_movimiento PRIMARY KEY (numero_tarjeta, id_movimiento),
+    CONSTRAINT fk_tarjeta_movimiento_numero_tarjeta FOREIGN KEY (numero_tarjeta) REFERENCES tarjeta(numero),
+    CONSTRAINT fk_movimiento_in_id_movimiento FOREIGN KEY (id_movimiento) REFERENCES movimiento(id)
+);
+
