@@ -7,6 +7,7 @@ package com.mycompany.gestorcc.backend;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -27,18 +28,22 @@ public class Conexion {
         }
     }
     
-    public void insertarValores(){
-        
+    public void insertarDatos(String insert){
+        try {
+            Statement statement = connection.createStatement();
+            int columnasAfectadas = statement.executeUpdate(insert);
+            System.out.println("Columnas afectadas: " + columnasAfectadas);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
-    // Método para cerrar la conexión
-    public void closeConnection() {
+    public void cerrarConexion() {
         if (connection != null) {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
-                // Manejo de excepciones personalizado
+                System.out.println("Error al cerrar la conexion");
             }
         }
     }

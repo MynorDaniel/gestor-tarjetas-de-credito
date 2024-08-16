@@ -35,24 +35,27 @@ public final class Gestion {
     public void solicitar(int numero, String fecha, TipoTarjeta tipo, String nombre, double salario, String direccion){
         System.out.println(numero + fecha + tipo + nombre + salario + direccion);
         String numeroTarjeta = generarTarjeta(tipo);
-        String insertSolicitud = "INSERT INTO solicitud (numero_solicitud, numero_tarjeta, estado, fecha) VALUES('" + numero + "', '" + numeroTarjeta + "', 'pendiente', " + fechaActual() + "'";
-        String insertTarjeta = "INSERT INTO solicitud (numero_solicitud, estado, fecha)";
+        String insertTarjeta = "INSERT INTO tarjeta (numero, fecha, limite, tipo, interes, monto, saldo, estado) VALUES('" + numeroTarjeta + "', '" + fechaActual() + "', '" + limite(salario) + "', '" + tipo + "', '" + interes(tipo) + "', '" + monto(0, interes(tipo)) + "', '" + 0 + "', 'PENDIENTE')";
+        String insertSolicitud = "INSERT INTO solicitud (numero_solicitud, numero_tarjeta, estado, fecha) VALUES('" + numero + "', '" + numeroTarjeta + "', 'PENDIENTE', '" + fechaActual() + "')";
+        String insertCliente = "INSERT INTO cliente (numero_tarjeta, salario, direccion, nombre) VALUES('" + numeroTarjeta + "', '" + salario + "', '" + direccion + "', '" + nombre + "')";
+        
+        Conexion conexion = new Conexion();
+        conexion.insertarDatos(insertTarjeta);
+        conexion.insertarDatos(insertSolicitud);
+        conexion.insertarDatos(insertCliente);
+        
     }
     
     public void mover(String numeroTarjeta, String fecha, TipoMovimiento tipo, String descripcion, String establecimiento, double monto){
-        System.out.println(numeroTarjeta + fecha + tipo + descripcion + establecimiento + monto);
     }
     
     public void consultar(String numeroTarjeta){
-        System.out.println(numeroTarjeta);
     }
     
     public void autorizar(int numeroSolicitud){
-        System.out.println(numeroSolicitud);
     }
     
     public void cancelar(String numeroTarjeta){
-        System.out.println(numeroTarjeta);
     }
     
     private String generarTarjeta(TipoTarjeta tipo){
@@ -66,15 +69,38 @@ public final class Gestion {
         
         Random random = new Random();
         int digitoAleatorio = random.nextInt(9);
-        int digitosAleatorios1 = random.nextInt(9000) + 1000; 
-        int digitosAleatorios2 = random.nextInt(9000) + 1000; 
+        int digitosAleatorios = random.nextInt(9000) + 1000;  
         
-        return (prefijo + digitoAleatorio + " " + digitosAleatorios1 + " " + digitosAleatorios2);
+        return (prefijo + digitoAleatorio + " " + digitosAleatorios);
     }
     
     private String fechaActual() {
         LocalDate fechaActual = LocalDate.now();
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return fechaActual.format(formato);
+    }
+    
+    private double limite(double numero) {
+        return numero * 0.6;
+    }
+    
+    private double interes(TipoTarjeta tipo) {
+        switch (tipo) {
+            case NACIONAL -> {
+                return 1.2;
+            }
+            case REGIONAL -> {
+                return 2.3;
+            }
+            case INTERNACIONAL -> {
+                return 3.75;
+            }
+        }
+        return 0;
+    }
+    
+    public double monto(double saldo, double interesPorcentaje) {
+        double interes = saldo * (interesPorcentaje / 100);
+        return saldo + interes;
     }
 }
