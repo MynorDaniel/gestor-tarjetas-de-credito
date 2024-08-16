@@ -33,16 +33,24 @@ public final class Gestion {
     }
     
     public void solicitar(int numero, String fecha, TipoTarjeta tipo, String nombre, double salario, String direccion){
-        System.out.println(numero + fecha + tipo + nombre + salario + direccion);
-        String numeroTarjeta = generarTarjeta(tipo);
-        String insertTarjeta = "INSERT INTO tarjeta (numero, fecha, limite, tipo, interes, monto, saldo, estado) VALUES('" + numeroTarjeta + "', '" + fechaActual() + "', '" + limite(salario) + "', '" + tipo + "', '" + interes(tipo) + "', '" + monto(0, interes(tipo)) + "', '" + 0 + "', 'PENDIENTE')";
+
+        String numeroTarjeta = Tarjeta.generarTarjeta(tipo);
+        String insertTarjeta = "INSERT INTO tarjeta (numero, fecha, limite, tipo, interes, monto, saldo, estado) VALUES('" + numeroTarjeta + "', '" + fechaActual() + "', '" + Tarjeta.limite(salario) + "', '" + tipo + "', '" + Tarjeta.interes(tipo) + "', '" + Tarjeta.monto(0, Tarjeta.interes(tipo)) + "', '" + 0 + "', 'PENDIENTE')";
         String insertSolicitud = "INSERT INTO solicitud (numero_solicitud, numero_tarjeta, estado, fecha) VALUES('" + numero + "', '" + numeroTarjeta + "', 'PENDIENTE', '" + fechaActual() + "')";
         String insertCliente = "INSERT INTO cliente (numero_tarjeta, salario, direccion, nombre) VALUES('" + numeroTarjeta + "', '" + salario + "', '" + direccion + "', '" + nombre + "')";
         
         Conexion conexion = new Conexion();
-        conexion.insertarDatos(insertTarjeta);
-        conexion.insertarDatos(insertSolicitud);
-        conexion.insertarDatos(insertCliente);
+        
+        if(!solicitudRepetida(numero, conexion)){
+            conexion.insertarQuery(insertTarjeta);
+            conexion.insertarQuery(insertSolicitud);
+            conexion.insertarQuery(insertCliente);
+            conexion.cerrarConexion();
+        }else{
+            System.out.println("solicitud repetida");
+        }
+        
+        
         
     }
     
@@ -58,49 +66,14 @@ public final class Gestion {
     public void cancelar(String numeroTarjeta){
     }
     
-    private String generarTarjeta(TipoTarjeta tipo){
-        String prefijo = "4256 3102 ";
-
-        switch (tipo) {
-            case NACIONAL -> prefijo += "654";
-            case REGIONAL -> prefijo += "656";
-            case INTERNACIONAL -> prefijo += "658";
-        }
-        
-        Random random = new Random();
-        int digitoAleatorio = random.nextInt(9);
-        int digitosAleatorios = random.nextInt(9000) + 1000;  
-        
-        return (prefijo + digitoAleatorio + " " + digitosAleatorios);
-    }
-    
     private String fechaActual() {
         LocalDate fechaActual = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return fechaActual.format(formato);
     }
     
-    private double limite(double numero) {
-        return numero * 0.6;
-    }
-    
-    private double interes(TipoTarjeta tipo) {
-        switch (tipo) {
-            case NACIONAL -> {
-                return 1.2;
-            }
-            case REGIONAL -> {
-                return 2.3;
-            }
-            case INTERNACIONAL -> {
-                return 3.75;
-            }
-        }
-        return 0;
-    }
-    
-    public double monto(double saldo, double interesPorcentaje) {
-        double interes = saldo * (interesPorcentaje / 100);
-        return saldo + interes;
+    private boolean solicitudRepetida(int numero, Conexion conexion){
+        String insert = "SELECT 1 FROM solicitud WHERE numero_solicitud = " + numero;
+        return conexion.verificarClavePrimaria(insert);
     }
 }

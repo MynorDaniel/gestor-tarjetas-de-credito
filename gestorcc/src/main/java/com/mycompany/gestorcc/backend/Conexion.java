@@ -6,6 +6,7 @@ package com.mycompany.gestorcc.backend;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -28,7 +29,7 @@ public class Conexion {
         }
     }
     
-    public void insertarDatos(String insert){
+    public void insertarQuery(String insert){
         try {
             Statement statement = connection.createStatement();
             int columnasAfectadas = statement.executeUpdate(insert);
@@ -36,6 +37,21 @@ public class Conexion {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    public boolean verificarClavePrimaria(String insert) {
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(insert);
+            return rs.next(); 
+
+        } catch (SQLException e) {
+            System.out.println("Error en verificar la pk");
+            e.printStackTrace();
+        }
+
+        return false; 
     }
 
     public void cerrarConexion() {
