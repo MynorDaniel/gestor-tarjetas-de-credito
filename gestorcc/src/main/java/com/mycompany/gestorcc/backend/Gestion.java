@@ -4,6 +4,10 @@
  */
 package com.mycompany.gestorcc.backend;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
+
 /**
  *
  * @author mynordma
@@ -30,6 +34,9 @@ public final class Gestion {
     
     public void solicitar(int numero, String fecha, TipoTarjeta tipo, String nombre, double salario, String direccion){
         System.out.println(numero + fecha + tipo + nombre + salario + direccion);
+        String numeroTarjeta = generarTarjeta(tipo);
+        String insertSolicitud = "INSERT INTO solicitud (numero_solicitud, numero_tarjeta, estado, fecha) VALUES('" + numero + "', '" + numeroTarjeta + "', 'pendiente', " + fechaActual() + "'";
+        String insertTarjeta = "INSERT INTO solicitud (numero_solicitud, estado, fecha)";
     }
     
     public void mover(String numeroTarjeta, String fecha, TipoMovimiento tipo, String descripcion, String establecimiento, double monto){
@@ -46,5 +53,28 @@ public final class Gestion {
     
     public void cancelar(String numeroTarjeta){
         System.out.println(numeroTarjeta);
+    }
+    
+    private String generarTarjeta(TipoTarjeta tipo){
+        String prefijo = "4256 3102 ";
+
+        switch (tipo) {
+            case NACIONAL -> prefijo += "654";
+            case REGIONAL -> prefijo += "656";
+            case INTERNACIONAL -> prefijo += "658";
+        }
+        
+        Random random = new Random();
+        int digitoAleatorio = random.nextInt(9);
+        int digitosAleatorios1 = random.nextInt(9000) + 1000; 
+        int digitosAleatorios2 = random.nextInt(9000) + 1000; 
+        
+        return (prefijo + digitoAleatorio + " " + digitosAleatorios1 + " " + digitosAleatorios2);
+    }
+    
+    private String fechaActual() {
+        LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return fechaActual.format(formato);
     }
 }
