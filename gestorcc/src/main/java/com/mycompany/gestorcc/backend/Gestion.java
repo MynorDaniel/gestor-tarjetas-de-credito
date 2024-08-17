@@ -4,6 +4,10 @@
  */
 package com.mycompany.gestorcc.backend;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  *
  * @author mynordma
@@ -22,7 +26,7 @@ public final class Gestion {
         switch(instruccion){
             case "SOLICITUD" -> {
                 Solicitud solicitud = new Solicitud();
-                solicitud.realizarSolicitud(Integer.parseInt(parametros[0]), parametros[1], TipoTarjeta.valueOf(parametros[2]), parametros[3], Double.parseDouble(parametros[4]), parametros[5]);
+                solicitud.realizarSolicitud(Integer.parseInt(parametros[0]), cambiarFormatoFecha(parametros[1]), TipoTarjeta.valueOf(parametros[2]), parametros[3], Double.parseDouble(parametros[4]), parametros[5]);
             }
             case "MOVIMIENTO" -> {
                 Tarjeta tarjeta = new Tarjeta();
@@ -42,4 +46,22 @@ public final class Gestion {
             }
         }
     } 
+    
+    public String cambiarFormatoFecha(String fecha) {
+        try {
+            DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate fechaLocalDate = LocalDate.parse(fecha, formatoEntrada);
+            DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return fechaLocalDate.format(formatoSalida);
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            return null; 
+        }
+    }
+    
+    public static String fechaActual() {
+        LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return fechaActual.format(formato);
+    }
 }

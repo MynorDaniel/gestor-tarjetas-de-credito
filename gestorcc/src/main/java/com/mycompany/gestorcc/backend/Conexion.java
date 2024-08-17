@@ -29,96 +29,67 @@ public class Conexion {
         }
     }
     
-    public void insertarQuery(String insert){
+    public void insert(double salario, String direccion, String nombre){
+        String insertCliente = "INSERT INTO cliente (salario, direccion, nombre) VALUES('" + salario + "', '" + direccion + "', '" + nombre + "')";
+        
         try {
             Statement statement = connection.createStatement();
-            int columnasAfectadas = statement.executeUpdate(insert);
+            int columnasAfectadas = statement.executeUpdate(insertCliente);
             System.out.println("Columnas afectadas: " + columnasAfectadas);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
     
-    public Object[] obtenerAtributos(String tabla, String llavePrimaria){
-        String insert = "select * from " + tabla + " where numero_tarjeta = " + llavePrimaria;
-        
-        Object[] atributos = null;
-        
+    public void insert(String numero, String fecha, double limite, String tipo, double interes, double monto, double saldo, String estado){
+
+        String insertTarjeta = "INSERT INTO tarjeta (numero, fecha, limite, tipo, interes, monto, saldo, estado) VALUES('" + numero + "', '" + fecha + "', '" + limite + "', '" + tipo + "', '" + interes + "', '" + monto + "', '" + saldo + "', '" + estado + "')";
+
         try {
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(insert);
-            
-            int columnas = rs.getMetaData().getColumnCount();
-            
-            if(rs.next()){
-                atributos = new Object[columnas];
-                for (int i = 0; i < columnas; i++) {
-                    atributos[i] = rs.getObject(i+1);
-                }
-            }else{
-                System.out.println("No hay tupla con: " + llavePrimaria);
-            }
+            int columnasAfectadas = statement.executeUpdate(insertTarjeta);
+            System.out.println("Columnas afectadas: " + columnasAfectadas);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
-        return atributos;
     }
     
-    public String obtenerAtributoCliente(String atributo, String numTarjeta){
-        String query = "select c." + atributo + " from cliente c join solicitud s on c.id = s.id_cliente where s.numero_tarjeta = '" + numTarjeta + "'";
-        String atributoReturn = "";
+    public void insert(int numSolicitud, String numTarjeta, String estado, String fecha, int idCliente){
+       
+        String insertSolicitud = "INSERT INTO solicitud (numero_solicitud, numero_tarjeta, estado, fecha, id_cliente) VALUES('" + numSolicitud + "', '" + numTarjeta + "', '" + estado + "', '" + fecha + "', '" + idCliente + "')";
         
+        try {
+            Statement statement = connection.createStatement();
+            int columnasAfectadas = statement.executeUpdate(insertSolicitud);
+            System.out.println("Columnas afectadas: " + columnasAfectadas);
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public String obtenerAtributo(String query, String atributo){
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             
-            
             if(rs.next()){
-                atributoReturn = rs.getString(atributo);
+                System.out.println(rs.getString(atributo));
+                return rs.getString(atributo);
             }else{
                 System.out.println("No existe el atributo");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return atributoReturn;
+        return "";
     }
     
-    public String obtenerAtributoTarjeta(String atributo, String numTarjeta){
-        String query = "select " + atributo + " from tarjeta where numero = '" + numTarjeta + "'";
-        String atributoReturn = "";
-        
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(query);
-            
-            
-            if(rs.next()){
-                atributoReturn = rs.getString(atributo);
-            }else{
-                System.out.println("No existe el atributo");
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return atributoReturn;
-    }
-    
-    public void actualizarAtributo(int numeroSolicitud, String estado, String tabla, boolean join, String tablaJoin) {
-        String query = "UPDATE " + tabla + " SET estado = '" + estado + "' WHERE numero_solicitud = " + numeroSolicitud;
-        String queryJoin = "UPDATE " + tabla + " t "
-                     + "JOIN " + tablaJoin+ " s ON t.numero = s.numero_tarjeta "
-                     + "SET t.estado = '" + estado + "' "
-                     + "WHERE s.numero_solicitud = " + numeroSolicitud;
+    public void actualizarAtributo(String query) {
 
         try {
             Statement stmt = connection.createStatement();
-            if(join){
-                stmt.executeUpdate(queryJoin);
-            }else{
-                stmt.executeUpdate(query);
-            }
+            stmt.executeUpdate(query);
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -170,7 +141,7 @@ public class Conexion {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al obtener atributo");
+            System.out.println("Error al obtener atributo.");
             e.printStackTrace();
         }
 

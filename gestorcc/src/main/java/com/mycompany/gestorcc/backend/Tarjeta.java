@@ -23,12 +23,14 @@ public class Tarjeta {
         
         Conexion conexion = new Conexion();
         
-        datos[0] = conexion.obtenerAtributoTarjeta("numero", numeroTarjeta);
-        datos[1] = conexion.obtenerAtributoTarjeta("tipo", numeroTarjeta);
-        datos[2] = conexion.obtenerAtributoTarjeta("limite", numeroTarjeta);
-        datos[3] = conexion.obtenerAtributoCliente("nombre", numeroTarjeta);
-        datos[4] = conexion.obtenerAtributoCliente("direccion", numeroTarjeta);
-        datos[5] = conexion.obtenerAtributoTarjeta("estado", numeroTarjeta);
+        datos[0] = conexion.obtenerAtributo("select numero from tarjeta where numero = '" + numeroTarjeta + "'", "numero");
+        datos[1] = conexion.obtenerAtributo("select tipo from tarjeta where numero = '" + numeroTarjeta + "'", "tipo");
+        datos[2] = conexion.obtenerAtributo("select limite from tarjeta where numero = '" + numeroTarjeta + "'", "limite");
+        datos[3] = conexion.obtenerAtributo("select c.nombre from cliente c join solicitud s on c.id = s.id_cliente where s.numero_tarjeta = '" + numeroTarjeta + "'", "nombre");
+        datos[4] = conexion.obtenerAtributo("select c.direccion from cliente c join solicitud s on c.id = s.id_cliente where s.numero_tarjeta = '" + numeroTarjeta + "'", "direccion");
+        datos[5] = conexion.obtenerAtributo("select estado from tarjeta where numero = '" + numeroTarjeta + "'", "estado");
+        
+        conexion.cerrarConexion();
         
         Reporte reporte = new Reporte(path_salida);
         reporte.generarHTML(datos);
@@ -39,16 +41,34 @@ public class Tarjeta {
         String salarioCliente = conexion.obtenerSalarioCliente(numeroSolicitud);
         String tipoTarjeta = conexion.obtenerTipoTarjeta(numeroSolicitud);
         if(superaLimite(salarioCliente, tipoTarjeta)){
-            conexion.actualizarAtributo(numeroSolicitud, "APROBADA", "solicitud", false, "");
-            conexion.actualizarAtributo(numeroSolicitud, "AUTORIZADA", "tarjeta", true, "solicitud");
+            conexion.actualizarAtributo("update solicitud set estado = 'APROBADA' where numero_solicitud = " + numeroSolicitud);
+            conexion.actualizarAtributo("update tarjeta t join solicitud s on t.numero = s.numero_tarjeta set t.estado = 'AUTORIZADA' where s.numero_solicitud = " + numeroSolicitud);
+            conexion.actualizarAtributo("update solicitud set fecha = '" + Gestion.fechaActual() + "' where numero_solicitud = " + numeroSolicitud);
+            conexion.actualizarAtributo("update tarjeta t join solicitud s on t.numero = s.numero_tarjeta set t.fecha = '" + Gestion.fechaActual() + "' where s.numero_solicitud = " + numeroSolicitud);
         }else{
-            conexion.actualizarAtributo(numeroSolicitud, "RECHAZADA", "solicitud", false, "");
-            conexion.actualizarAtributo(numeroSolicitud, "RECHAZADA", "tarjeta", true, "solicitud");
+            conexion.actualizarAtributo("update solicitud set estado = 'RECHAZADA' where numero_solicitud = " + numeroSolicitud);
+            conexion.actualizarAtributo("update tarjeta t join solicitud s on t.numero = s.numero_tarjeta set t.estado = 'RECHAZADA' where s.numero_solicitud = " + numeroSolicitud);
+            conexion.actualizarAtributo("update solicitud set fecha = '" + Gestion.fechaActual() + "' where numero_solicitud = " + numeroSolicitud);
+            conexion.actualizarAtributo("update tarjeta t join solicitud s on t.numero = s.numero_tarjeta set t.fecha = '" + Gestion.fechaActual() + "' where s.numero_solicitud = " + numeroSolicitud);
         }
         conexion.cerrarConexion();
     }
     
     public void cancelar(String numeroTarjeta){
+        if(sePuedeCancelar(numeroTarjeta)){
+            Conexion conexion = new Conexion();
+            conexion.actualizarAtributo("update tarjeta set estado = 'CANCELADA' where numero = '" + numeroTarjeta + "'");
+            conexion.actualizarAtributo("update tarjeta set fecha = '" + Gestion.fechaActual() + "' where numero = '" + numeroTarjeta + "'");
+            conexion.cerrarConexion();
+        }
+    }
+    
+    public boolean sePuedeCancelar(String numeroTarjeta){
+        Conexion conexion = new Conexion();
+        String estado = conexion.obtenerAtributo("select estado from tarjeta where numero = '" + numeroTarjeta + "'", "estado");
+        String saldo = conexion.obtenerAtributo("select saldo from tarjeta where numero = '" + numeroTarjeta + "'", "saldo");
+        conexion.cerrarConexion();
+        return (estado.equals("AUTORIZADA") && Double.parseDouble(saldo)<=0);
     }
     
     public boolean superaLimite(String salario, String tipo){

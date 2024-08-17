@@ -20,12 +20,9 @@ public class Solicitud {
         Conexion conexion = new Conexion();
         
         if(!solicitudRepetida(numero, conexion)){
-            String insertCliente = "INSERT INTO cliente (salario, direccion, nombre) VALUES('" + salario + "', '" + direccion + "', '" + nombre + "')";
-            conexion.insertarQuery(insertCliente);
-            String insertTarjeta = "INSERT INTO tarjeta (numero, fecha, limite, tipo, interes, monto, saldo, estado) VALUES('" + numeroTarjeta + "', '" + fechaActual() + "', '" + Tarjeta.limite(salario) + "', '" + tipo + "', '" + Tarjeta.interes(tipo) + "', '" + Tarjeta.monto(0, Tarjeta.interes(tipo)) + "', '" + 0 + "', 'PENDIENTE')";
-            conexion.insertarQuery(insertTarjeta);
-            String insertSolicitud = "INSERT INTO solicitud (numero_solicitud, numero_tarjeta, estado, fecha, id_cliente) VALUES('" + numero + "', '" + numeroTarjeta + "', 'PENDIENTE', '" + fechaActual() + "', '" + conexion.obtenerUltimoIdCliente() + "')";
-            conexion.insertarQuery(insertSolicitud);
+            conexion.insert(salario, direccion, nombre); //tabla cliente
+            conexion.insert(numeroTarjeta, fecha, Tarjeta.limite(salario), tipo.name(), Tarjeta.interes(tipo), Tarjeta.monto(0, Tarjeta.interes(tipo)), 0, "PENDIENTE"); //tabla tarjeta
+            conexion.insert(numero, numeroTarjeta, "PENDIENTE", fecha, conexion.obtenerUltimoIdCliente()); //tabla solicitud
    
             conexion.cerrarConexion();
         }else{
@@ -38,11 +35,7 @@ public class Solicitud {
         return conexion.verificarClavePrimaria(insert);
     }
     
-    private String fechaActual() {
-        LocalDate fechaActual = LocalDate.now();
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return fechaActual.format(formato);
-    }
+    
     
     
     
