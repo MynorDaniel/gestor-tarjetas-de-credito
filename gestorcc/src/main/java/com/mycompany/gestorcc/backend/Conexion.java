@@ -39,6 +39,26 @@ public class Conexion {
         }
     }
     
+    public void actualizarAtributo(int numeroSolicitud, String estado, String tabla, boolean join, String tablaJoin) {
+        String query = "UPDATE " + tabla + " SET estado = '" + estado + "' WHERE numero_solicitud = " + numeroSolicitud;
+        String queryJoin = "UPDATE " + tabla + " t "
+                     + "JOIN " + tablaJoin+ " s ON t.numero = s.numero_tarjeta "
+                     + "SET t.estado = '" + estado + "' "
+                     + "WHERE s.numero_solicitud = " + numeroSolicitud;
+
+        try {
+            Statement stmt = connection.createStatement();
+            if(join){
+                stmt.executeUpdate(queryJoin);
+            }else{
+                stmt.executeUpdate(query);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public boolean verificarClavePrimaria(String insert) {
 
         try {

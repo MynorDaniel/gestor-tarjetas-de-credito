@@ -26,7 +26,11 @@ public class Tarjeta {
         String salarioCliente = conexion.obtenerSalarioCliente(numeroSolicitud);
         String tipoTarjeta = conexion.obtenerTipoTarjeta(numeroSolicitud);
         if(superaLimite(salarioCliente, tipoTarjeta)){
-            System.out.println("zmzmzmmz");
+            conexion.actualizarAtributo(numeroSolicitud, "APROBADA", "solicitud", false, "");
+            conexion.actualizarAtributo(numeroSolicitud, "AUTORIZADA", "tarjeta", true, "solicitud");
+        }else{
+            conexion.actualizarAtributo(numeroSolicitud, "RECHAZADA", "solicitud", false, "");
+            conexion.actualizarAtributo(numeroSolicitud, "RECHAZADA", "tarjeta", true, "solicitud");
         }
     }
     
