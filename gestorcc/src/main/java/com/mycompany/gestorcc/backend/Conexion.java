@@ -54,6 +54,32 @@ public class Conexion {
         }
     }
     
+    public void insert(String numeroTarjeta, String descripcion, String fecha, double monto, String tipo, String establecimiento){
+
+        String insertMovimiento = "INSERT INTO movimiento (numero_tarjeta, descripcion, fecha, monto, tipo, establecimiento) VALUES('" + numeroTarjeta + "', '" + descripcion + "', '" + fecha + "', '" + monto + "', '" + tipo + "', '" + establecimiento + "')";
+
+        try {
+            Statement statement = connection.createStatement();
+            int columnasAfectadas = statement.executeUpdate(insertMovimiento);
+            System.out.println("Columnas afectadas: " + columnasAfectadas);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void insert(String numeroTarjeta, int idMovimiento){
+
+        String insertTarjeta_Movimiento = "INSERT INTO tarjeta_movimiento (numero_tarjeta, id_movimiento) VALUES('" + numeroTarjeta + "', '" + idMovimiento + "')";
+
+        try {
+            Statement statement = connection.createStatement();
+            int columnasAfectadas = statement.executeUpdate(insertTarjeta_Movimiento);
+            System.out.println("Columnas afectadas: " + columnasAfectadas);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     public void insert(int numSolicitud, String numTarjeta, String estado, String fecha, int idCliente){
        
         String insertSolicitud = "INSERT INTO solicitud (numero_solicitud, numero_tarjeta, estado, fecha, id_cliente) VALUES('" + numSolicitud + "', '" + numTarjeta + "', '" + estado + "', '" + fecha + "', '" + idCliente + "')";
@@ -111,10 +137,10 @@ public class Conexion {
         return false; 
     }
     
-    public int obtenerUltimoIdCliente() {
+    public int obtenerUltimoId(String tabla) {
         int ultimoId = -1;
 
-        String query = "SELECT id FROM cliente ORDER BY id DESC LIMIT 1";
+        String query = "SELECT id FROM " + tabla + " ORDER BY id DESC LIMIT 1";
 
         try {
             Statement stmt = connection.createStatement();

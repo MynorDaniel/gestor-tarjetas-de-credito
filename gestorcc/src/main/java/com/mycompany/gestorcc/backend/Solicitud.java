@@ -22,7 +22,7 @@ public class Solicitud {
         if(!solicitudRepetida(numero, conexion)){
             conexion.insert(salario, direccion, nombre); //tabla cliente
             conexion.insert(numeroTarjeta, fecha, Tarjeta.limite(salario), tipo.name(), Tarjeta.interes(tipo), Tarjeta.monto(0, Tarjeta.interes(tipo)), 0, "PENDIENTE"); //tabla tarjeta
-            conexion.insert(numero, numeroTarjeta, "PENDIENTE", fecha, conexion.obtenerUltimoIdCliente()); //tabla solicitud
+            conexion.insert(numero, numeroTarjeta, "PENDIENTE", fecha, conexion.obtenerUltimoId("cliente")); //tabla solicitud
    
             conexion.cerrarConexion();
         }else{

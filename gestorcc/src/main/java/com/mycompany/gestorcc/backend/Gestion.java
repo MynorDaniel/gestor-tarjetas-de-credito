@@ -30,7 +30,7 @@ public final class Gestion {
             }
             case "MOVIMIENTO" -> {
                 Tarjeta tarjeta = new Tarjeta();
-                tarjeta.transaccion(parametros[0], parametros[1], TipoMovimiento.valueOf(parametros[2]), parametros[3], parametros[4], Double.parseDouble(parametros[5]));
+                tarjeta.transaccion(parametros[0], cambiarFormatoFecha(parametros[1]), TipoMovimiento.valueOf(parametros[2]), parametros[3], parametros[4], Double.parseDouble(parametros[5]));
             }
             case "CONSULTAR_TARJETA" -> {
                 Tarjeta tarjeta = new Tarjeta();

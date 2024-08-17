@@ -16,6 +16,18 @@ import java.util.Random;
 public class Tarjeta {
     
     public void transaccion(String numeroTarjeta, String fecha, TipoMovimiento tipo, String descripcion, String establecimiento, double monto){
+        Conexion conexion = new Conexion();
+        if(puedeHacerMovimiento(numeroTarjeta, monto, conexion)){
+            double saldoResultante = tipo.modificarSaldo(numeroTarjeta, monto);
+            System.out.println(saldoResultante);
+            conexion.insert(numeroTarjeta, descripcion, fecha, monto, tipo.name(), establecimiento);
+            conexion.insert(numeroTarjeta, conexion.obtenerUltimoId("movimiento"));
+        }else{
+            System.out.println("Haz llegado al limite de credito");
+        }
+        
+        conexion.cerrarConexion();
+        
     }
     
     public void consultar(String numeroTarjeta, String path_salida){
@@ -80,6 +92,12 @@ public class Tarjeta {
             case "INTERNACIONAL" -> limiteSalarial >= limites[2];
             default -> false;
         };
+    }
+    
+    private boolean puedeHacerMovimiento(String numeroTarjeta, double monto, Conexion conexion){
+        String saldo = conexion.obtenerAtributo("select saldo from tarjeta where numero = '" + numeroTarjeta + "'", "saldo");
+        String limite = conexion.obtenerAtributo("select limite from tarjeta where numero = '" + numeroTarjeta + "'", "limite");
+        return ((Double.parseDouble(saldo) + monto) <= Double.parseDouble(limite));
     }
     
     public static String generarTarjeta(TipoTarjeta tipo){
