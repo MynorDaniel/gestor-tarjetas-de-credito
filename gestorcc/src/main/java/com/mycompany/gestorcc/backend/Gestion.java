@@ -12,7 +12,7 @@ public final class Gestion {
     private String instruccion;
     private String[] parametros;
     
-    public Gestion(String[] instrucciones){
+    public Gestion(String[] instrucciones, String path_salida){
         instruccion = instrucciones[0];
         parametros = new String[instrucciones.length-1];
         for (int i = 0; i < parametros.length; i++) {
@@ -30,7 +30,7 @@ public final class Gestion {
             }
             case "CONSULTAR_TARJETA" -> {
                 Tarjeta tarjeta = new Tarjeta();
-                tarjeta.consultar(parametros[0]);
+                tarjeta.consultar(parametros[0], path_salida);
             }
             case "AUTORIZACION_TARJETA" -> {
                 Tarjeta tarjeta = new Tarjeta();

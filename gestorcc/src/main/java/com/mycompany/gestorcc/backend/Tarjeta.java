@@ -18,7 +18,20 @@ public class Tarjeta {
     public void transaccion(String numeroTarjeta, String fecha, TipoMovimiento tipo, String descripcion, String establecimiento, double monto){
     }
     
-    public void consultar(String numeroTarjeta){
+    public void consultar(String numeroTarjeta, String path_salida){
+        String[] datos = new String[6];
+        
+        Conexion conexion = new Conexion();
+        
+        datos[0] = conexion.obtenerAtributoTarjeta("numero", numeroTarjeta);
+        datos[1] = conexion.obtenerAtributoTarjeta("tipo", numeroTarjeta);
+        datos[2] = conexion.obtenerAtributoTarjeta("limite", numeroTarjeta);
+        datos[3] = conexion.obtenerAtributoCliente("nombre", numeroTarjeta);
+        datos[4] = conexion.obtenerAtributoCliente("direccion", numeroTarjeta);
+        datos[5] = conexion.obtenerAtributoTarjeta("estado", numeroTarjeta);
+        
+        Reporte reporte = new Reporte(path_salida);
+        reporte.generarHTML(datos);
     }
     
     public void autorizar(int numeroSolicitud){
@@ -32,6 +45,7 @@ public class Tarjeta {
             conexion.actualizarAtributo(numeroSolicitud, "RECHAZADA", "solicitud", false, "");
             conexion.actualizarAtributo(numeroSolicitud, "RECHAZADA", "tarjeta", true, "solicitud");
         }
+        conexion.cerrarConexion();
     }
     
     public void cancelar(String numeroTarjeta){

@@ -39,6 +39,72 @@ public class Conexion {
         }
     }
     
+    public Object[] obtenerAtributos(String tabla, String llavePrimaria){
+        String insert = "select * from " + tabla + " where numero_tarjeta = " + llavePrimaria;
+        
+        Object[] atributos = null;
+        
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(insert);
+            
+            int columnas = rs.getMetaData().getColumnCount();
+            
+            if(rs.next()){
+                atributos = new Object[columnas];
+                for (int i = 0; i < columnas; i++) {
+                    atributos[i] = rs.getObject(i+1);
+                }
+            }else{
+                System.out.println("No hay tupla con: " + llavePrimaria);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return atributos;
+    }
+    
+    public String obtenerAtributoCliente(String atributo, String numTarjeta){
+        String query = "select c." + atributo + " from cliente c join solicitud s on c.id = s.id_cliente where s.numero_tarjeta = '" + numTarjeta + "'";
+        String atributoReturn = "";
+        
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            
+            
+            if(rs.next()){
+                atributoReturn = rs.getString(atributo);
+            }else{
+                System.out.println("No existe el atributo");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return atributoReturn;
+    }
+    
+    public String obtenerAtributoTarjeta(String atributo, String numTarjeta){
+        String query = "select " + atributo + " from tarjeta where numero = '" + numTarjeta + "'";
+        String atributoReturn = "";
+        
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            
+            
+            if(rs.next()){
+                atributoReturn = rs.getString(atributo);
+            }else{
+                System.out.println("No existe el atributo");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return atributoReturn;
+    }
+    
     public void actualizarAtributo(int numeroSolicitud, String estado, String tabla, boolean join, String tablaJoin) {
         String query = "UPDATE " + tabla + " SET estado = '" + estado + "' WHERE numero_solicitud = " + numeroSolicitud;
         String queryJoin = "UPDATE " + tabla + " t "
