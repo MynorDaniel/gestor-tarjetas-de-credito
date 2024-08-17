@@ -15,6 +15,35 @@ import java.util.Random;
  */
 public class Tarjeta {
     
+    public void transaccion(String numeroTarjeta, String fecha, TipoMovimiento tipo, String descripcion, String establecimiento, double monto){
+    }
+    
+    public void consultar(String numeroTarjeta){
+    }
+    
+    public void autorizar(int numeroSolicitud){
+        Conexion conexion = new Conexion();
+        String salarioCliente = conexion.obtenerSalarioCliente(numeroSolicitud);
+        String tipoTarjeta = conexion.obtenerTipoTarjeta(numeroSolicitud);
+        if(superaLimite(salarioCliente, tipoTarjeta)){
+            System.out.println("zmzmzmmz");
+        }
+    }
+    
+    public void cancelar(String numeroTarjeta){
+    }
+    
+    public boolean superaLimite(String salario, String tipo){
+        int[] limites = new int[]{5000, 10000, 20000};
+        double limiteSalarial = Double.parseDouble(salario) * 0.6;
+        return switch (tipo) {
+            case "NACIONAL" -> limiteSalarial >= limites[0];
+            case "REGIONAL" -> limiteSalarial >= limites[1];
+            case "INTERNACIONAL" -> limiteSalarial >= limites[2];
+            default -> false;
+        };
+    }
+    
     public static String generarTarjeta(TipoTarjeta tipo){
         String prefijo = "4256 3102 ";
 

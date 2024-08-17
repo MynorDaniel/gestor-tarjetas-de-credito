@@ -53,6 +53,61 @@ public class Conexion {
 
         return false; 
     }
+    
+    public int obtenerUltimoIdCliente() {
+        int ultimoId = -1;
+
+        String query = "SELECT id FROM cliente ORDER BY id DESC LIMIT 1";
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                ultimoId = rs.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ultimoId;
+    }
+    
+    public String obtenerSalarioCliente(int numeroSolicitud) {
+        String query = "select c.salario from cliente c join solicitud s on c.id = s.id_cliente where s.numero_solicitud = " + numeroSolicitud;
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                return rs.getString("salario"); 
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener atributo");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
+    public String obtenerTipoTarjeta(int numeroSolicitud) {
+        String query = "select t.tipo from tarjeta t join solicitud s on t.numero = s.numero_tarjeta where s.numero_solicitud = " + numeroSolicitud;
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                return rs.getString("tipo"); 
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener atributo");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public void cerrarConexion() {
         if (connection != null) {
