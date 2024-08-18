@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class ArchivoEntrada {
     
     private final String pathEntrada;
-    private final String[] lineas = new String[10];
+    private final List<String> lineas = new ArrayList<>();
     private final List<String[]> instrucciones = new ArrayList<>();
 
     public List<String[]> getInstrucciones() {
@@ -30,8 +30,10 @@ public class ArchivoEntrada {
     public void leerContenido() {
         try (BufferedReader br = new BufferedReader(new FileReader(pathEntrada))) {
             int index = 0;
-            while ((lineas[index] = br.readLine()) != null){
-                instrucciones.add(separarLinea(lineas[index]));
+            String tmp;
+            while((tmp = br.readLine()) != null){
+                lineas.add(tmp);
+                instrucciones.add((separarLinea(lineas.get(index))));
                 index++;
             }
         } catch (IOException e) {
@@ -46,16 +48,22 @@ public class ArchivoEntrada {
      * @param frase
      * @return String[]
      */
-    private String[] separarLinea(String frase) {
+    private static String[] separarLinea(String frase) {
         int indiceParentesis = frase.indexOf('(');
         
-        String instruccion = frase.substring(0, indiceParentesis).trim();
-        String[] parametros = frase.substring(indiceParentesis + 1, frase.length() - 2).trim().split(",");
+        String instruccion = frase.substring(0, indiceParentesis);
+        String[] parametros = frase.substring(indiceParentesis + 1, frase.length() - 2).split(",", -1);
+        
         
         for (int i = 0; i < parametros.length; i++) {
-            if(parametros[i].charAt(0) == '\"'){
+            if(parametros[i].equals("")){
+                parametros[i] = "NULO";
+            }else{
+                if(parametros[i].charAt(0) == '\"'){
                 parametros[i] = parametros[i].substring(1, parametros[i].length()-1);
             }
+            }
+            
         }
         
         for (String parametro : parametros) {

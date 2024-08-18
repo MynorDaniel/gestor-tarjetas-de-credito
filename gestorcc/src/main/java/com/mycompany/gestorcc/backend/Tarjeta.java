@@ -32,6 +32,8 @@ public class Tarjeta {
     
     public void consultar(String numeroTarjeta, String path_salida){
         String[] datos = new String[6];
+        String[][] matrizDatos = new String[2][6];
+        String[] titulos = new String[]{"Numero", "TipoTarjeta", "Limite", "Nombre", "Direccion", "Estado", };
         
         Conexion conexion = new Conexion();
         
@@ -42,10 +44,13 @@ public class Tarjeta {
         datos[4] = conexion.obtenerAtributo("select c.direccion from cliente c join solicitud s on c.id = s.id_cliente where s.numero_tarjeta = '" + numeroTarjeta + "'", "direccion");
         datos[5] = conexion.obtenerAtributo("select estado from tarjeta where numero = '" + numeroTarjeta + "'", "estado");
         
+        matrizDatos[0] = titulos;
+        matrizDatos[1] = datos;
+        
         conexion.cerrarConexion();
         
         Reporte reporte = new Reporte(path_salida);
-        reporte.generarHTML(datos);
+        reporte.generarHTML(matrizDatos, "Consulta: '" + numeroTarjeta + "'");
     }
     
     public void autorizar(int numeroSolicitud){

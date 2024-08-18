@@ -44,6 +44,21 @@ public final class Gestion {
                 Tarjeta tarjeta = new Tarjeta();
                 tarjeta.cancelar(parametros[0]);
             }
+            case "ESTADO_CUENTA" -> {
+                Reporte reporte = new Reporte("");
+                String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero", "Tipo", "Nombre", "Direccion", "Fecha", "Movimiento", "Descripcion", "Establecimiento", "Monto", "Monto Total", "Interes %", "Saldo"});
+                reporte.generarHTML(datosGenerados, "Estado_de_cuenta");
+            }
+            case "LISTADO_TARJETAS" -> {
+                Reporte reporte = new Reporte("");
+                //String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero, Tipo, Limite, Nombre, Direccion, Fecha, Estado"});
+                //reporte.generarHTML(datosGenerados, "");
+            }
+            case "LISTADO_SOLICITUDES" -> {
+                Reporte reporte = new Reporte("");
+                //String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero De Solicitud, Fecha, Tipo, Nombre, Salario, Direccion, Estado De Solicitud"});
+                //reporte.generarHTML(datosGenerados, "");
+            }
         }
     } 
     
