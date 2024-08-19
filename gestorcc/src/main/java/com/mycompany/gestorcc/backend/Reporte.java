@@ -17,6 +17,12 @@ public class Reporte {
         this.PATH_SALIDA = path_salida;
     }
     
+    /**
+     * Genera una matriz que representa una tabla de los datos solicitados
+     * @param titulos
+     * @param tipoReporte
+     * @return 
+     */
     public String[][] generarReporte(String[] titulos, int tipoReporte) {
         String[][] datos = null;
         

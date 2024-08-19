@@ -15,6 +15,15 @@ import java.util.Random;
  */
 public class Tarjeta {
     
+    /**
+     * Hace un nuevo movimiento modificando las respectivas tablas en la bd
+     * @param numeroTarjeta
+     * @param fecha
+     * @param tipo
+     * @param descripcion
+     * @param establecimiento
+     * @param monto 
+     */
     public void transaccion(String numeroTarjeta, String fecha, TipoMovimiento tipo, String descripcion, String establecimiento, double monto){
         Conexion conexion = new Conexion();
         if(puedeHacerMovimiento(numeroTarjeta, monto, conexion)){
@@ -30,6 +39,13 @@ public class Tarjeta {
         
     }
     
+    /**
+     * Devuelve la informacion de la tarjeta solicitada
+     * @param numeroTarjeta
+     * @param path_salida
+     * @param desdeInterfazGrafica
+     * @return 
+     */
     public String[][] consultar(String numeroTarjeta, String path_salida, boolean desdeInterfazGrafica){
         String[] datos = new String[6];
         String[][] matrizDatos = new String[2][6];
@@ -58,6 +74,10 @@ public class Tarjeta {
         return null;
     }
     
+    /**
+     * Actualiza el estado de la solicitud, estado de la tarjeta y la fecha en la bd
+     * @param numeroSolicitud 
+     */
     public void autorizar(int numeroSolicitud){
         Conexion conexion = new Conexion();
         String salarioCliente = conexion.obtenerSalarioCliente(numeroSolicitud);
@@ -76,6 +96,10 @@ public class Tarjeta {
         conexion.cerrarConexion();
     }
     
+    /**
+     * Cancela la tarjeta especificada
+     * @param numeroTarjeta 
+     */
     public void cancelar(String numeroTarjeta){
         if(sePuedeCancelar(numeroTarjeta)){
             Conexion conexion = new Conexion();
@@ -85,6 +109,11 @@ public class Tarjeta {
         }
     }
     
+    /**
+     * Verifica si la tarjeta no tiene saldo pendiente
+     * @param numeroTarjeta
+     * @return 
+     */
     public boolean sePuedeCancelar(String numeroTarjeta){
         Conexion conexion = new Conexion();
         String estado = conexion.obtenerAtributo("select estado from tarjeta where numero = '" + numeroTarjeta + "'", "estado");
@@ -93,6 +122,12 @@ public class Tarjeta {
         return (estado.equals("AUTORIZADA") && Double.parseDouble(saldo)<=0);
     }
     
+    /**
+     * Verifica si el cliente cumple los requisitos para tener una tarjeta
+     * @param salario
+     * @param tipo
+     * @return 
+     */
     public boolean superaLimite(String salario, String tipo){
         int[] limites = new int[]{5000, 10000, 20000};
         double limiteSalarial = Double.parseDouble(salario) * 0.6;
@@ -110,6 +145,12 @@ public class Tarjeta {
         return ((Double.parseDouble(saldo) + monto) <= Double.parseDouble(limite));
     }
     
+    /**
+     * Genera una nueva tarjeta eligiendo al azar los cinco ultimos numeros, 
+     * aun no confirma que la tarjeta generada no exista en la bd
+     * @param tipo
+     * @return 
+     */
     public static String generarTarjeta(TipoTarjeta tipo){
         String prefijo = "4256 3102 ";
 

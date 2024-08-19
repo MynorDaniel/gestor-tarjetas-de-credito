@@ -17,6 +17,12 @@ public final class Gestion {
     private String[] parametros;
     private String[][] datosGenerados = null;
     
+    /**
+     * Constructor que ejecuta una instruccion dependiendo del parametro cero de las instrucciones
+     * @param instrucciones
+     * @param path_salida
+     * @param desdeInterfazGrafica 
+     */
     public Gestion(String[] instrucciones, String path_salida, boolean desdeInterfazGrafica){
         instruccion = instrucciones[0];
         parametros = new String[instrucciones.length-1];

@@ -10,6 +10,15 @@ package com.mycompany.gestorcc.backend;
  */
 public class Solicitud {
     
+    /**
+     * Ingresa una nueva solicitud a la base de datos
+     * @param numero
+     * @param fecha
+     * @param tipo
+     * @param nombre
+     * @param salario
+     * @param direccion 
+     */
     public void realizarSolicitud(int numero, String fecha, TipoTarjeta tipo, String nombre, double salario, String direccion){
         
         String numeroTarjeta = Tarjeta.generarTarjeta(tipo);        

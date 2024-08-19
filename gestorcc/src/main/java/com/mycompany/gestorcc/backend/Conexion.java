@@ -29,6 +29,7 @@ public class Conexion {
         }
     }
     
+    //Metodos que ejecutan querys
     public void insert(double salario, String direccion, String nombre){
         String insertCliente = "INSERT INTO cliente (salario, direccion, nombre) VALUES('" + salario + "', '" + direccion + "', '" + nombre + "')";
         
