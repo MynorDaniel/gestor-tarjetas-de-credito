@@ -53,31 +53,31 @@ El tipo de movimiento puede ser unicamente CARGO o ABONO.
 
 ![Archivo de entrada](gestorcc/src/img/solicitud.png)
 
-### 4.2. Movimientos
+### 4.3. Movimientos
 
 ![Archivo de entrada](gestorcc/src/img/movimiento.png)
 
-### 4.2. Consultas
+### 4.4. Consultas
 
 ![Archivo de entrada](gestorcc/src/img/consulta.png)
 
-### 4.2. Autorizaciones
+### 4.5. Autorizaciones
 
 ![Archivo de entrada](gestorcc/src/img/autorizar.png)
 
-### 4.2. Cancelaciones
+### 4.6. Cancelaciones
 
 ![Archivo de entrada](gestorcc/src/img/cancelar.png)
 
-### 4.2. Estado de cuenta
+### 4.7. Estado de cuenta
 
 ![Archivo de entrada](gestorcc/src/img/estado.png)
 
-### 4.2. Listado de tarjetas
+### 4.8. Listado de tarjetas
 
 ![Archivo de entrada](gestorcc/src/img/tarjetas.png)
 
-### 4.2. Listado solicitudes
+### 4.9. Listado solicitudes
 
 ![Archivo de entrada](gestorcc/src/img/solicitudes.png)
 
