@@ -52,7 +52,7 @@ public class Tarjeta {
             return matrizDatos;
         }else{
             Reporte reporte = new Reporte(path_salida);
-            reporte.generarHTML(matrizDatos, "Consulta: '" + numeroTarjeta + "'");
+            reporte.generarHTML(matrizDatos, "Consulta: '" + numeroTarjeta + "'", path_salida);
         }
         
         return null;

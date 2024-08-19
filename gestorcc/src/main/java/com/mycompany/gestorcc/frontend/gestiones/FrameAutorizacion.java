@@ -4,6 +4,7 @@
  */
 package com.mycompany.gestorcc.frontend.gestiones;
 
+import com.mycompany.gestorcc.backend.ArchivoEntrada;
 import com.mycompany.gestorcc.backend.Gestion;
 import javax.swing.JOptionPane;
 
@@ -85,9 +86,14 @@ public class FrameAutorizacion extends javax.swing.JInternalFrame {
         instrucciones[0] = "AUTORIZACION_TARJETA";
         instrucciones[1] = numSolicitudField.getText();
         
+        if(!(ArchivoEntrada.esEntero(instrucciones[1]))){
+            JOptionPane.showMessageDialog(this, "Revisa los campos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         Gestion gestion = new Gestion(instrucciones, "", true);
         
-        JOptionPane.showMessageDialog(this, "Se ha autorizado la tarjeta", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Hecho", "Informacion", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_autorizarBtnActionPerformed
 
 

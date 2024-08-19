@@ -12,6 +12,14 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cargarBtnMouseClicked"/>
           </Events>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="destinoBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Carpeta Destino"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="destinoBtnMouseClicked"/>
+          </Events>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="solicitudBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Solicitud"/>
@@ -62,7 +70,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="listadoTBtn">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Listado De Tarjetas"/>
+            <Property name="text" type="java.lang.String" value="Ver Tarjetas"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="listadoTBtnMouseClicked"/>
@@ -70,7 +78,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="listadoSBtn">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Listado De Solicitudes"/>
+            <Property name="text" type="java.lang.String" value="Ver Solicitudes"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="listadoSBtnMouseClicked"/>
@@ -102,7 +110,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jDesktopPane1" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="jDesktopPane1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -122,7 +133,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="885" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="937" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">

@@ -50,7 +50,7 @@ public final class Gestion {
                 datosGenerados = reporte.generarReporte(new String[]{"Numero", "Tipo", "Nombre", "Direccion", "Fecha", "Movimiento", "Descripcion", "Establecimiento", "Monto", "Monto Total", "Interes %", "Saldo"}, 1);
                 
                 if(!desdeInterfazGrafica){
-                    reporte.generarHTML(datosGenerados, "Estado_de_cuenta");
+                    reporte.generarHTML(datosGenerados, "Estado_de_cuenta", path_salida);
                 }
                 
             }
@@ -59,7 +59,7 @@ public final class Gestion {
                 datosGenerados = reporte.generarReporte(new String[]{"Numero", "Tipo", "Limite", "Nombre", "Direccion", "Fecha", "Estado"}, 2);
                 
                 if(!desdeInterfazGrafica){
-                   reporte.generarHTML(datosGenerados, "Listado_tarjetas"); 
+                   reporte.generarHTML(datosGenerados, "Listado_tarjetas", path_salida); 
                 }
                 
             }
@@ -68,7 +68,7 @@ public final class Gestion {
                 datosGenerados = reporte.generarReporte(new String[]{"Numero De Solicitud", "Fecha", "Tipo", "Nombre", "Salario", "Direccion", "Estado De Solicitud"}, 3);
                 
                 if(!desdeInterfazGrafica){
-                   reporte.generarHTML(datosGenerados, "Listado_solicitudes"); 
+                   reporte.generarHTML(datosGenerados, "Listado_solicitudes", path_salida); 
                 }
                 
             }

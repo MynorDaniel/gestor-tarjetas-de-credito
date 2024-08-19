@@ -4,6 +4,7 @@
  */
 package com.mycompany.gestorcc.frontend.gestiones;
 
+import com.mycompany.gestorcc.backend.ArchivoEntrada;
 import com.mycompany.gestorcc.backend.Gestion;
 import javax.swing.JOptionPane;
 
@@ -142,9 +143,14 @@ public class FrameSolicitud extends javax.swing.JInternalFrame {
         instrucciones[5] = salarioField.getText();
         instrucciones[6] = direccionField.getText();
         
+        if(!(ArchivoEntrada.esEntero(instrucciones[1]) && ArchivoEntrada.esFecha(instrucciones[2]) && ArchivoEntrada.esTipo(instrucciones[3]) && ArchivoEntrada.esDouble(instrucciones[5]))){
+            JOptionPane.showMessageDialog(this, "Revisa los campos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         Gestion gestion = new Gestion(instrucciones, "", true);
         
-        JOptionPane.showMessageDialog(this, "Solicitud exitosa", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Completado, si la solicitud no aparece intente otro numero", "Informacion", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_confirmarBtnActionPerformed
 
 

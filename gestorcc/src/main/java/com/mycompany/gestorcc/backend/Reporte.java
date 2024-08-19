@@ -32,17 +32,14 @@ public class Reporte {
         return datos;
     }
     
-     public void generarHTML(String[][] datos, String nombreArchivo) {
+     public void generarHTML(String[][] datos, String nombreArchivo, String pathSalida) {
         // Verificar que haya datos suficientes para generar la tabla
         if (datos == null || datos.length == 0 || datos[0].length == 0) {
             System.err.println("No hay datos suficientes para generar la tabla.");
             return;
         }
 
-        // Definir la ruta del archivo
-        String userHome = System.getProperty("user.home");
-        String directorio = userHome + File.separator + "Documents" + File.separator + "reportes";
-        File directorioReportes = new File(directorio);
+        File directorioReportes = new File(pathSalida);
 
         // Crear el directorio si no existe
         if (!directorioReportes.exists()) {

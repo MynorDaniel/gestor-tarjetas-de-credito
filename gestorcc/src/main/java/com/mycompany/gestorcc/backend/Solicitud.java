@@ -4,9 +4,6 @@
  */
 package com.mycompany.gestorcc.backend;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 /**
  *
  * @author mynordma
@@ -25,8 +22,6 @@ public class Solicitud {
             conexion.insert(numero, numeroTarjeta, "PENDIENTE", fecha, conexion.obtenerUltimoId("cliente")); //tabla solicitud
    
             conexion.cerrarConexion();
-        }else{
-            System.out.println("solicitud repetida");
         }
     }
     

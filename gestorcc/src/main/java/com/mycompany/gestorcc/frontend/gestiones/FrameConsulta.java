@@ -4,6 +4,7 @@
  */
 package com.mycompany.gestorcc.frontend.gestiones;
 
+import com.mycompany.gestorcc.backend.ArchivoEntrada;
 import com.mycompany.gestorcc.backend.Gestion;
 import com.mycompany.gestorcc.frontend.reportes.FrameTabla;
 import javax.swing.JDesktopPane;
@@ -87,6 +88,11 @@ public class FrameConsulta extends javax.swing.JInternalFrame {
         String[] instrucciones = new String[2];
         instrucciones[0] = "CONSULTAR_TARJETA";
         instrucciones[1] = numTarjetaField.getText();
+        
+        if(!(ArchivoEntrada.esTarjeta(instrucciones[1]))){
+            JOptionPane.showMessageDialog(this, "Revisa los campos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
         Gestion gestion = new Gestion(instrucciones, "", true);
         

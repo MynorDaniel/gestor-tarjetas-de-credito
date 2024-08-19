@@ -6,19 +6,21 @@ package com.mycompany.gestorcc.frontend;
 
 import com.mycompany.gestorcc.frontend.gestiones.*;
 import com.mycompany.gestorcc.frontend.reportes.*;
+import java.io.File;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author mynordma
  */
 public class FramePrincipal extends javax.swing.JFrame {
-
+    private String destinoPath = System.getProperty("user.dir");
     /**
      * Creates new form FramePrincipal
      */
     public FramePrincipal() {
         initComponents();
-        this.setSize(1050, 500);
+        this.setSize(1100, 500);
         this.setLocationRelativeTo(null);
         this.setTitle("Gestion Tarjetas");
     }
@@ -35,6 +37,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         cargarBtn = new javax.swing.JMenu();
+        destinoBtn = new javax.swing.JMenu();
         solicitudBtn = new javax.swing.JMenu();
         movimientoBtn = new javax.swing.JMenu();
         consultaBtn = new javax.swing.JMenu();
@@ -52,7 +55,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 885, Short.MAX_VALUE)
+            .addGap(0, 937, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -66,6 +69,14 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(cargarBtn);
+
+        destinoBtn.setText("Carpeta Destino");
+        destinoBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                destinoBtnMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(destinoBtn);
 
         solicitudBtn.setText("Solicitud");
         solicitudBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -115,7 +126,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
         jMenuBar1.add(estadoBtn);
 
-        listadoTBtn.setText("Listado De Tarjetas");
+        listadoTBtn.setText("Ver Tarjetas");
         listadoTBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 listadoTBtnMouseClicked(evt);
@@ -123,7 +134,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
         jMenuBar1.add(listadoTBtn);
 
-        listadoSBtn.setText("Listado De Solicitudes");
+        listadoSBtn.setText("Ver Solicitudes");
         listadoSBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 listadoSBtnMouseClicked(evt);
@@ -137,7 +148,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,7 +161,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargarBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cargarBtnMouseClicked
-        FrameCargarArchivo frameArchivo = new FrameCargarArchivo();
+        FrameCargarArchivo frameArchivo = new FrameCargarArchivo(destinoPath);
         jDesktopPane1.add(frameArchivo);
         frameArchivo.setVisible(true);
     }//GEN-LAST:event_cargarBtnMouseClicked
@@ -201,12 +214,28 @@ public class FramePrincipal extends javax.swing.JFrame {
         frame.setVisible(true);
     }//GEN-LAST:event_listadoSBtnMouseClicked
 
+    private void destinoBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_destinoBtnMouseClicked
+        //Guardando la ruta de la carpeta destino
+
+        JFileChooser directorioChooser = new JFileChooser();
+    
+        directorioChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int returnValue = directorioChooser.showOpenDialog(this);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File directorio = directorioChooser.getSelectedFile();
+            destinoPath = directorio.getAbsolutePath();
+        }
+    }//GEN-LAST:event_destinoBtnMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu autorizacionBtn;
     private javax.swing.JMenu cancelacionBtn;
     private javax.swing.JMenu cargarBtn;
     private javax.swing.JMenu consultaBtn;
+    private javax.swing.JMenu destinoBtn;
     private javax.swing.JMenu estadoBtn;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenuBar jMenuBar1;

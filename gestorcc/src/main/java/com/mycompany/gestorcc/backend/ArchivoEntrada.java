@@ -8,6 +8,9 @@ import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 /**
@@ -26,8 +29,9 @@ public class ArchivoEntrada {
     
     /**
      * Lee el contenido del archivo en el path especificado.
+     * @throws java.lang.Exception
      */
-    public void leerContenido() {
+    public void leerContenido() throws Exception{
         try (BufferedReader br = new BufferedReader(new FileReader(pathEntrada))) {
             int index = 0;
             String tmp;
@@ -40,7 +44,6 @@ public class ArchivoEntrada {
             e.printStackTrace();
         }
         
-        //imprimirElementos(instrucciones);
     }
     
     /**
@@ -48,7 +51,7 @@ public class ArchivoEntrada {
      * @param frase
      * @return String[]
      */
-    private static String[] separarLinea(String frase) {
+    private static String[] separarLinea  (String frase) {
         int indiceParentesis = frase.indexOf('(');
         
         String instruccion = frase.substring(0, indiceParentesis);
@@ -80,18 +83,111 @@ public class ArchivoEntrada {
         return resultado;
     }
     
-    public ArchivoEntrada(String pathEntrada){
-        this.pathEntrada = pathEntrada;
+    public boolean verificarInstrucciones(){
+        for (int i = 0; i < instrucciones.size(); i++) {
+            String[] parametros = instrucciones.get(i);
+                switch(parametros[0]){
+                        case "SOLICITUD" -> {
+                            return esEntero(parametros[1]) && esFecha(parametros[2]) && esTipo(parametros[3]) && esDouble(parametros[5]);
+                    }
+                        case "LISTADO_SOLICITUDES" -> {
+                            return true;
+                    }
+                        case "MOVIMIENTO" -> {
+                            return esTarjeta(parametros[1]) && esFecha(parametros[2]) && esMovimiento(parametros[3]) && esDouble(parametros[6]);
+                    }
+                        case "CONSULTAR_TARJETA" -> {
+                            return esTarjeta(parametros[1]);
+                    }
+                        case "AUTORIZACION_TARJETA" -> {
+                            return esEntero(parametros[1]);
+                    }
+                        case "CANCELACION_TARJETA" -> {
+                            return esTarjeta(parametros[1]);
+                    }
+                        case "ESTADO_CUENTA" -> {
+                            return true;
+                    }
+                        case "LISTADO_TARJETAS" -> {
+                            return true;
+                    }
+                        default -> {
+                            return false;
+                    }
+                }
+            }
+        return false;
     }
     
-    public static void imprimirElementos(List<String[]> listaDeArreglos) {
-        for (int i = 0; i < listaDeArreglos.size(); i++) {
-            System.out.println("Arreglo " + i + ":");
-            String[] arreglo = listaDeArreglos.get(i);
-            for (String elemento : arreglo) {
-                System.out.println("  " + elemento);
+    public static boolean esTarjeta(String parametro){
+        // Expresión regular para el formato xxxx xxxx xxxx xxxx
+        String regex = "\\d{4} \\d{4} \\d{4} \\d{4}";
+
+        if (!parametro.matches(regex)) {
+            return false;
+        }
+
+        for (int i = 0; i < parametro.length(); i++) {
+            char c = parametro.charAt(i);
+            if (!Character.isDigit(c) && c != ' ') {
+                return false;
             }
         }
+        return true;
+    }
+    
+    public static boolean esEntero(String parametro) {
+    try {
+        Integer.valueOf(parametro);
+        return true;
+    } catch (NumberFormatException e) {
+        return false;
+    }
+}
+
+    
+    public static boolean esFecha(String parametro) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    try {
+        LocalDate.parse(parametro, formatter);
+        return true;
+    } catch (DateTimeParseException e) {
+        return false;
+    }
+}
+    
+    public static boolean esTipo(String parametro) {
+    return "NACIONAL".equals(parametro) || 
+           "INTERNACIONAL".equals(parametro) || 
+           "REGIONAL".equals(parametro);
+}
+
+    
+    public static boolean esDouble(String parametro) {
+    // Expresión regular para números con hasta 2 decimales
+    String regex = "^[0-9]+(\\.[0-9]{1,2})?$";
+    
+    if (!parametro.matches(regex)) {
+        return false;
+    }
+
+    try {
+        Double.valueOf(parametro);
+        return true;
+    } catch (NumberFormatException e) {
+        return false;
+    }
+}
+
+    
+    public static boolean esMovimiento(String parametro){
+        return "CARGO".equals(parametro) || 
+           "ABONO".equals(parametro);
+    }
+
+    
+    public ArchivoEntrada(String pathEntrada){
+        this.pathEntrada = pathEntrada;
     }
     
 }

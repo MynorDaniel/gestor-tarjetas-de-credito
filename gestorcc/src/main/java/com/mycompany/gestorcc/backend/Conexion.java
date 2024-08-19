@@ -246,9 +246,9 @@ public class Conexion {
                 datos[i][6] = rs.getString("descripcion_movimiento");
                 datos[i][7] = rs.getString("establecimiento_movimiento");
                 datos[i][8] = rs.getString("monto_movimiento");
-                datos[i][9] = rs.getString("monto_tarjeta");
                 datos[i][10] = rs.getString("interes_tarjeta");
                 datos[i][11] = rs.getString("saldo_tarjeta");
+                datos[i][9] = String.valueOf(Double.valueOf(datos[i][10]) + Double.valueOf(datos[i][11]));
                 i++;
             }
 

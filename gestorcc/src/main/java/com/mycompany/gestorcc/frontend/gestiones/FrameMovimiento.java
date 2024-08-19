@@ -4,6 +4,7 @@
  */
 package com.mycompany.gestorcc.frontend.gestiones;
 
+import com.mycompany.gestorcc.backend.ArchivoEntrada;
 import com.mycompany.gestorcc.backend.Gestion;
 import javax.swing.JOptionPane;
 
@@ -158,6 +159,11 @@ public class FrameMovimiento extends javax.swing.JInternalFrame {
         instrucciones[4] = descripcionField.getText();
         instrucciones[5] = establecimientoField.getText();
         instrucciones[6] = montoField.getText();
+        
+        if(!(ArchivoEntrada.esTarjeta(instrucciones[1]) && ArchivoEntrada.esFecha(instrucciones[2]) && ArchivoEntrada.esDouble(instrucciones[6]))){
+            JOptionPane.showMessageDialog(this, "Revisa los campos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
         Gestion gestion = new Gestion(instrucciones, "", true);
         

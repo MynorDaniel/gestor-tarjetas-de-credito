@@ -8,7 +8,10 @@ import com.mycompany.gestorcc.backend.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
@@ -20,12 +23,15 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
     
     private String filePath = "";
     private String destinoPath = "";
+    private final JInternalFrame componente = this;
 
     /**
      * Creates new form FrameCargarArchivo
+     * @param destinoPath
      */
-    public FrameCargarArchivo() {
+    public FrameCargarArchivo(String destinoPath) {
         initComponents();
+        this.destinoPath = destinoPath;
         this.setTitle("Cargar Archivo");
         this.setSize(500, 300);
         this.setClosable(true);
@@ -45,7 +51,6 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         seleccionarBtn = new javax.swing.JButton();
-        destinoBtn = new javax.swing.JButton();
         confirmarBtn = new javax.swing.JButton();
         jProgressBar1 = new javax.swing.JProgressBar();
         jTextField1 = new javax.swing.JTextField();
@@ -56,13 +61,6 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
         seleccionarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 seleccionarBtnActionPerformed(evt);
-            }
-        });
-
-        destinoBtn.setText("Carpeta Destino");
-        destinoBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                destinoBtnActionPerformed(evt);
             }
         });
 
@@ -92,8 +90,7 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
                             .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(seleccionarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(destinoBtn))
+                                .addGap(129, 129, 129))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
@@ -108,9 +105,7 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(seleccionarBtn)
-                    .addComponent(destinoBtn))
+                .addComponent(seleccionarBtn)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -141,25 +136,6 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_seleccionarBtnActionPerformed
 
-    private void destinoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destinoBtnActionPerformed
-        //Guardando la ruta de la carpeta destino
-
-        JFileChooser directorioChooser = new JFileChooser();
-    
-        directorioChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-        int returnValue = directorioChooser.showOpenDialog(this);
-
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File directorio = directorioChooser.getSelectedFile();
-            destinoPath = directorio.getAbsolutePath();
-            System.out.println("Carpeta seleccionada: " + destinoPath);
-        } else {
-            System.out.println("No se selecciono ninguna carpeta.");
-        }
-        
-    }//GEN-LAST:event_destinoBtnActionPerformed
-
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
         
         String text = jTextField1.getText();
@@ -170,11 +146,18 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
             jProgressBar1.setMaximum(milisegundos);
             
             ArchivoEntrada archivo = new ArchivoEntrada(filePath);
-            archivo.leerContenido();
+            try {
+                archivo.leerContenido();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Hay un error de sintaxis en tu archivo de entrada", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            if(!archivo.verificarInstrucciones()){
+                JOptionPane.showMessageDialog(this, "Hay un error de sintaxis en tu archivo de entrada", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             Gestion gestion;
             
             seleccionarBtn.setEnabled(false);
-            destinoBtn.setEnabled(false);
             confirmarBtn.setEnabled(false);
             
             for (int i = 0; i < archivo.getInstrucciones().size(); i++){
@@ -193,15 +176,15 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
                     } else {
                         ((Timer)e.getSource()).stop(); 
                         seleccionarBtn.setEnabled(true);
-                        destinoBtn.setEnabled(true);
                         confirmarBtn.setEnabled(true);
+                        JOptionPane.showMessageDialog(componente, "Completado", "Informacion", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
             });
             timer.start();
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Ingrese un tiempo valido en milisegundos", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se pudo completar la accion, revise sus entradas", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_confirmarBtnActionPerformed
@@ -209,7 +192,6 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton confirmarBtn;
-    private javax.swing.JButton destinoBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JProgressBar jProgressBar1;
