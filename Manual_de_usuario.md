@@ -1,3 +1,16 @@
+# Gestor de Tarjetas de Credito
+
+## 1. Introducción
+
+Este es un programa que permite manipular registros de tarjetas de credito mediante un archivo de entrada que contiene las instrucciones, y tambien a traves de la interfaz de usuario.
+Funcionalidades: solicitar, autorizar y consultar tarjetas, realizar cargos y abonos, ver estados de cuenta, etc.
+
+## 2. Instalación
+
+1. Clonar el repositorio.
+2. Crear la base de datos en base al mapeo fisico.
+3. Cambiar las credenciales en la clase Conexion.
+
 ## 3. Interfaz de Usuario
 
 ### 3.1. Pantalla Principal
