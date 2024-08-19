@@ -30,7 +30,7 @@ public class Tarjeta {
         
     }
     
-    public void consultar(String numeroTarjeta, String path_salida){
+    public String[][] consultar(String numeroTarjeta, String path_salida, boolean desdeInterfazGrafica){
         String[] datos = new String[6];
         String[][] matrizDatos = new String[2][6];
         String[] titulos = new String[]{"Numero", "TipoTarjeta", "Limite", "Nombre", "Direccion", "Estado", };
@@ -48,9 +48,14 @@ public class Tarjeta {
         matrizDatos[1] = datos;
         
         conexion.cerrarConexion();
+        if(desdeInterfazGrafica){
+            return matrizDatos;
+        }else{
+            Reporte reporte = new Reporte(path_salida);
+            reporte.generarHTML(matrizDatos, "Consulta: '" + numeroTarjeta + "'");
+        }
         
-        Reporte reporte = new Reporte(path_salida);
-        reporte.generarHTML(matrizDatos, "Consulta: '" + numeroTarjeta + "'");
+        return null;
     }
     
     public void autorizar(int numeroSolicitud){

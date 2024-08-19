@@ -4,6 +4,9 @@
  */
 package com.mycompany.gestorcc.frontend.gestiones;
 
+import com.mycompany.gestorcc.backend.Gestion;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mynordma
@@ -21,7 +24,7 @@ public class FrameAutorizacion extends javax.swing.JInternalFrame {
         this.setIconifiable(true);
         this.setMaximizable(true);
         this.setResizable(true);
-        initComponents();
+        
     }
 
     /**
@@ -33,21 +36,64 @@ public class FrameAutorizacion extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        autorizarBtn = new javax.swing.JButton();
+        numSolicitudField = new javax.swing.JTextField();
+
+        jLabel1.setText("Numero Solicitud");
+
+        autorizarBtn.setText("Autorizar");
+        autorizarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                autorizarBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addGap(31, 31, 31)
+                        .addComponent(numSolicitudField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addComponent(autorizarBtn)))
+                .addContainerGap(149, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(numSolicitudField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(89, 89, 89)
+                .addComponent(autorizarBtn)
+                .addContainerGap(133, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void autorizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autorizarBtnActionPerformed
+        String[] instrucciones = new String[2];
+        instrucciones[0] = "AUTORIZACION_TARJETA";
+        instrucciones[1] = numSolicitudField.getText();
+        
+        Gestion gestion = new Gestion(instrucciones, "", true);
+        
+        JOptionPane.showMessageDialog(this, "Se ha autorizado la tarjeta", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_autorizarBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton autorizarBtn;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField numSolicitudField;
     // End of variables declaration//GEN-END:variables
 }

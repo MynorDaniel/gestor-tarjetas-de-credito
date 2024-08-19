@@ -32,7 +32,6 @@ public class FramePrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         cargarBtn = new javax.swing.JMenu();
@@ -47,20 +46,17 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Logs:");
-        jLabel1.setBorder(new javax.swing.border.MatteBorder(null));
-
         jDesktopPane1.setBackground(new java.awt.Color(85, 124, 162));
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 885, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 521, Short.MAX_VALUE)
+            .addGap(0, 552, Short.MAX_VALUE)
         );
 
         cargarBtn.setText("Cargar Archivo");
@@ -141,15 +137,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
             .addComponent(jDesktopPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jDesktopPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1))
+            .addComponent(jDesktopPane1)
         );
 
         pack();
@@ -174,7 +166,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_movimientoBtnMouseClicked
 
     private void consultaBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_consultaBtnMouseClicked
-        FrameConsulta frame = new FrameConsulta();
+        FrameConsulta frame = new FrameConsulta(jDesktopPane1);
         jDesktopPane1.add(frame);
         frame.setVisible(true);
     }//GEN-LAST:event_consultaBtnMouseClicked
@@ -192,19 +184,19 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelacionBtnMouseClicked
 
     private void estadoBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_estadoBtnMouseClicked
-        FrameEstadoCuenta frame = new FrameEstadoCuenta();
+        FrameEstadoCuenta frame = new FrameEstadoCuenta(jDesktopPane1);
         jDesktopPane1.add(frame);
         frame.setVisible(true);
     }//GEN-LAST:event_estadoBtnMouseClicked
 
     private void listadoTBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listadoTBtnMouseClicked
-        ListadoTarjetas frame = new ListadoTarjetas();
+        ListadoTarjetas frame = new ListadoTarjetas(jDesktopPane1);
         jDesktopPane1.add(frame);
         frame.setVisible(true);
     }//GEN-LAST:event_listadoTBtnMouseClicked
 
     private void listadoSBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listadoSBtnMouseClicked
-        ListadoSolicitudes frame = new ListadoSolicitudes();
+        ListadoSolicitudes frame = new ListadoSolicitudes(jDesktopPane1);
         jDesktopPane1.add(frame);
         frame.setVisible(true);
     }//GEN-LAST:event_listadoSBtnMouseClicked
@@ -217,7 +209,6 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu consultaBtn;
     private javax.swing.JMenu estadoBtn;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu listadoSBtn;
     private javax.swing.JMenu listadoTBtn;

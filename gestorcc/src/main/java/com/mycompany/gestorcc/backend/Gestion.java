@@ -15,8 +15,9 @@ import java.time.format.DateTimeParseException;
 public final class Gestion {
     private String instruccion;
     private String[] parametros;
+    private String[][] datosGenerados = null;
     
-    public Gestion(String[] instrucciones, String path_salida){
+    public Gestion(String[] instrucciones, String path_salida, boolean desdeInterfazGrafica){
         instruccion = instrucciones[0];
         parametros = new String[instrucciones.length-1];
         for (int i = 0; i < parametros.length; i++) {
@@ -34,7 +35,7 @@ public final class Gestion {
             }
             case "CONSULTAR_TARJETA" -> {
                 Tarjeta tarjeta = new Tarjeta();
-                tarjeta.consultar(parametros[0], path_salida);
+                datosGenerados = tarjeta.consultar(parametros[0], path_salida, desdeInterfazGrafica);
             }
             case "AUTORIZACION_TARJETA" -> {
                 Tarjeta tarjeta = new Tarjeta();
@@ -46,18 +47,30 @@ public final class Gestion {
             }
             case "ESTADO_CUENTA" -> {
                 Reporte reporte = new Reporte("");
-                String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero", "Tipo", "Nombre", "Direccion", "Fecha", "Movimiento", "Descripcion", "Establecimiento", "Monto", "Monto Total", "Interes %", "Saldo"}, 1);
-                reporte.generarHTML(datosGenerados, "Estado_de_cuenta");
+                datosGenerados = reporte.generarReporte(new String[]{"Numero", "Tipo", "Nombre", "Direccion", "Fecha", "Movimiento", "Descripcion", "Establecimiento", "Monto", "Monto Total", "Interes %", "Saldo"}, 1);
+                
+                if(!desdeInterfazGrafica){
+                    reporte.generarHTML(datosGenerados, "Estado_de_cuenta");
+                }
+                
             }
             case "LISTADO_TARJETAS" -> {
                 Reporte reporte = new Reporte("");
-                String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero", "Tipo", "Limite", "Nombre", "Direccion", "Fecha", "Estado"}, 2);
-                reporte.generarHTML(datosGenerados, "Listado_tarjetas");
+                datosGenerados = reporte.generarReporte(new String[]{"Numero", "Tipo", "Limite", "Nombre", "Direccion", "Fecha", "Estado"}, 2);
+                
+                if(!desdeInterfazGrafica){
+                   reporte.generarHTML(datosGenerados, "Listado_tarjetas"); 
+                }
+                
             }
             case "LISTADO_SOLICITUDES" -> {
                 Reporte reporte = new Reporte("");
-                String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero De Solicitud", "Fecha", "Tipo", "Nombre", "Salario", "Direccion", "Estado De Solicitud"}, 3);
-                reporte.generarHTML(datosGenerados, "Listado_solicitudes");
+                datosGenerados = reporte.generarReporte(new String[]{"Numero De Solicitud", "Fecha", "Tipo", "Nombre", "Salario", "Direccion", "Estado De Solicitud"}, 3);
+                
+                if(!desdeInterfazGrafica){
+                   reporte.generarHTML(datosGenerados, "Listado_solicitudes"); 
+                }
+                
             }
         }
     } 
@@ -79,4 +92,10 @@ public final class Gestion {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return fechaActual.format(formato);
     }
+
+    public String[][] getDatosGenerados() {
+        return datosGenerados;
+    }
+    
+    
 }

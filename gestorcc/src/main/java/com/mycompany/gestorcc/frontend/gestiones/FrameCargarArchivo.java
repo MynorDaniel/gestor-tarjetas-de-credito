@@ -4,11 +4,22 @@
  */
 package com.mycompany.gestorcc.frontend.gestiones;
 
+import com.mycompany.gestorcc.backend.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+
 /**
  *
  * @author mynordma
  */
 public class FrameCargarArchivo extends javax.swing.JInternalFrame {
+    
+    private String filePath = "";
+    private String destinoPath = "";
 
     /**
      * Creates new form FrameCargarArchivo
@@ -16,12 +27,12 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
     public FrameCargarArchivo() {
         initComponents();
         this.setTitle("Cargar Archivo");
-        this.setSize(400, 300);
+        this.setSize(500, 300);
         this.setClosable(true);
         this.setIconifiable(true);
         this.setMaximizable(true);
         this.setResizable(true);
-        initComponents();
+        
     }
 
     /**
@@ -33,49 +44,176 @@ public class FrameCargarArchivo extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        seleccionarBtn = new javax.swing.JButton();
+        destinoBtn = new javax.swing.JButton();
+        confirmarBtn = new javax.swing.JButton();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        seleccionarBtn.setText("Seleccionar Archivo");
+        seleccionarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                seleccionarBtnActionPerformed(evt);
             }
         });
 
-        jButton2.setText("jButton2");
+        destinoBtn.setText("Carpeta Destino");
+        destinoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                destinoBtnActionPerformed(evt);
+            }
+        });
+
+        confirmarBtn.setText("Confirmar");
+        confirmarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmarBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Velocidad Procesamiento (ms)");
+
+        jLabel2.setText("Logs");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(seleccionarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(destinoBtn))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(66, 66, 66))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(confirmarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(46, 46, 46))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(230, Short.MAX_VALUE))
+                    .addComponent(seleccionarBtn)
+                    .addComponent(destinoBtn))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(confirmarBtn)
+                .addGap(28, 28, 28)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("Hola");
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void seleccionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarBtnActionPerformed
+        //Guardando la ruta del archivo de entrada
+        
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(this);
+        
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File archivoSeleccionado = fileChooser.getSelectedFile();
+            filePath = archivoSeleccionado.getAbsolutePath();
+            System.out.println("Path archivo: " + filePath);
+        }
+        
+    }//GEN-LAST:event_seleccionarBtnActionPerformed
+
+    private void destinoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destinoBtnActionPerformed
+        //Guardando la ruta de la carpeta destino
+
+        JFileChooser directorioChooser = new JFileChooser();
+    
+        directorioChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int returnValue = directorioChooser.showOpenDialog(this);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File directorio = directorioChooser.getSelectedFile();
+            destinoPath = directorio.getAbsolutePath();
+            System.out.println("Carpeta seleccionada: " + destinoPath);
+        } else {
+            System.out.println("No se selecciono ninguna carpeta.");
+        }
+        
+    }//GEN-LAST:event_destinoBtnActionPerformed
+
+    private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
+        
+        String text = jTextField1.getText();
+
+        try {
+            int milisegundos = Integer.parseInt(text);
+
+            jProgressBar1.setMaximum(milisegundos);
+            
+            ArchivoEntrada archivo = new ArchivoEntrada(filePath);
+            archivo.leerContenido();
+            Gestion gestion;
+            
+            seleccionarBtn.setEnabled(false);
+            destinoBtn.setEnabled(false);
+            confirmarBtn.setEnabled(false);
+            
+            for (int i = 0; i < archivo.getInstrucciones().size(); i++){
+                gestion = new Gestion(archivo.getInstrucciones().get(i), destinoPath, false);
+            }
+            
+        
+            Timer timer = new Timer(1, new ActionListener() {
+                private int progreso = 0;
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (progreso < milisegundos) {
+                        progreso++;
+                        jProgressBar1.setValue(progreso);
+                    } else {
+                        ((Timer)e.getSource()).stop(); 
+                        seleccionarBtn.setEnabled(true);
+                        destinoBtn.setEnabled(true);
+                        confirmarBtn.setEnabled(true);
+                    }
+                }
+            });
+            timer.start();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un tiempo valido en milisegundos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_confirmarBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton confirmarBtn;
+    private javax.swing.JButton destinoBtn;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton seleccionarBtn;
     // End of variables declaration//GEN-END:variables
 }

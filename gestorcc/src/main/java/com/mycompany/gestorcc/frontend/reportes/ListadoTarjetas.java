@@ -4,17 +4,22 @@
  */
 package com.mycompany.gestorcc.frontend.reportes;
 
+import com.mycompany.gestorcc.backend.Gestion;
+import javax.swing.JDesktopPane;
+
 /**
  *
  * @author mynordma
  */
 public class ListadoTarjetas extends javax.swing.JInternalFrame {
-
+    JDesktopPane jDesktopPane1;
     /**
      * Creates new form ListadoTarjetas
+     * @param jDesktopPane1
      */
-    public ListadoTarjetas() {
+    public ListadoTarjetas(JDesktopPane jDesktopPane1) {
         initComponents();
+        this.jDesktopPane1 = jDesktopPane1;
         this.setTitle("Listar Tarjetas");
         this.setSize(400, 300);
         this.setClosable(true);
@@ -33,21 +38,50 @@ public class ListadoTarjetas extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
+
+        jButton1.setText("Ver Tarjetas");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(137, 137, 137)
+                .addComponent(jButton1)
+                .addContainerGap(157, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(129, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(122, 122, 122))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String[] instrucciones = new String[1];
+        instrucciones[0] = "LISTADO_TARJETAS";
+        
+        Gestion gestion = new Gestion(instrucciones, "", true);
+        
+        String[][] datos = gestion.getDatosGenerados();
+        
+        FrameTabla tabla = new FrameTabla(datos);
+        jDesktopPane1.add(tabla);
+        tabla.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
 }
