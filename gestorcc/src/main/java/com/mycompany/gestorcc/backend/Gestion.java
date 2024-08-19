@@ -46,18 +46,18 @@ public final class Gestion {
             }
             case "ESTADO_CUENTA" -> {
                 Reporte reporte = new Reporte("");
-                String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero", "Tipo", "Nombre", "Direccion", "Fecha", "Movimiento", "Descripcion", "Establecimiento", "Monto", "Monto Total", "Interes %", "Saldo"});
+                String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero", "Tipo", "Nombre", "Direccion", "Fecha", "Movimiento", "Descripcion", "Establecimiento", "Monto", "Monto Total", "Interes %", "Saldo"}, 1);
                 reporte.generarHTML(datosGenerados, "Estado_de_cuenta");
             }
             case "LISTADO_TARJETAS" -> {
                 Reporte reporte = new Reporte("");
-                //String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero, Tipo, Limite, Nombre, Direccion, Fecha, Estado"});
-                //reporte.generarHTML(datosGenerados, "");
+                String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero", "Tipo", "Limite", "Nombre", "Direccion", "Fecha", "Estado"}, 2);
+                reporte.generarHTML(datosGenerados, "Listado_tarjetas");
             }
             case "LISTADO_SOLICITUDES" -> {
                 Reporte reporte = new Reporte("");
-                //String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero De Solicitud, Fecha, Tipo, Nombre, Salario, Direccion, Estado De Solicitud"});
-                //reporte.generarHTML(datosGenerados, "");
+                String[][] datosGenerados = reporte.generarReporte(new String[]{"Numero De Solicitud", "Fecha", "Tipo", "Nombre", "Salario", "Direccion", "Estado De Solicitud"}, 3);
+                reporte.generarHTML(datosGenerados, "Listado_solicitudes");
             }
         }
     } 

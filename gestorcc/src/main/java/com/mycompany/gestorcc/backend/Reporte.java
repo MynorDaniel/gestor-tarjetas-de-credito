@@ -17,11 +17,17 @@ public class Reporte {
         this.PATH_SALIDA = path_salida;
     }
     
-    public String[][] generarReporte(String[] titulos) {
-        String[][] datos;
-
+    public String[][] generarReporte(String[] titulos, int tipoReporte) {
+        String[][] datos = null;
+        
         Conexion conexion = new Conexion();
-        datos = conexion.estadoDeCuenta(titulos);
+        
+        switch (tipoReporte){
+            case 1 -> datos = conexion.estadoDeCuenta(titulos);
+            case 2 -> datos = conexion.listadoTarjetas(titulos);
+            case 3 -> datos = conexion.listadoSolicitudes(titulos);
+        }
+       
         conexion.cerrarConexion();
         return datos;
     }

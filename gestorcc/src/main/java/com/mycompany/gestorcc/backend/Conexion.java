@@ -80,6 +80,116 @@ public class Conexion {
         }
     }
     
+    public String[][] listadoSolicitudes(String[] titulos){
+        String[][] datos = null;
+        
+        String query = "SELECT " +
+                       "    s.numero_solicitud AS numero_solicitud, " +
+                       "    s.fecha AS fecha_solicitud, " +
+                       "    t.tipo AS tipo_tarjeta, " +
+                       "    c.nombre AS nombre_cliente, " +
+                       "    c.salario AS salario_cliente, " +
+                       "    c.direccion AS direccion_cliente, " +
+                       "    s.estado AS estado_solicitud " +
+                       "FROM " +
+                       "    tarjeta t " +
+                       "JOIN " +
+                       "    solicitud s ON t.numero = s.numero_tarjeta " +
+                       "JOIN " +
+                       "    cliente c ON s.id_cliente = c.id";
+        
+        
+        try {
+            Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = stmt.executeQuery(query);
+            // Obtener el número de filas
+            rs.last();
+            int numRows = rs.getRow();
+            rs.beforeFirst();
+
+            // Número de columnas (12 columnas en el SELECT)
+            int numCols = 7;
+
+            // Inicializar la matriz con una fila adicional para los títulos
+            datos = new String[numRows + 1][numCols];
+
+            // Agregar los títulos en la primera fila (índice 0)
+            datos[0] = titulos;
+
+            int i = 1;  // Iniciar desde la fila 1 para insertar datos
+            while (rs.next()) {
+                datos[i][0] = rs.getString("numero_solicitud");
+                datos[i][1] = rs.getString("fecha_solicitud");
+                datos[i][2] = rs.getString("tipo_tarjeta");
+                datos[i][3] = rs.getString("nombre_cliente");
+                datos[i][4] = rs.getString("salario_cliente");
+                datos[i][5] = rs.getString("direccion_cliente");
+                datos[i][6] = rs.getString("estado_solicitud");
+                i++;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return datos;
+    }
+    
+    public String[][] listadoTarjetas(String[] titulos){
+        String[][] datos = null;
+        
+        String query = "SELECT " +
+                       "    t.numero AS numero_tarjeta, " +
+                       "    t.tipo AS tipo_tarjeta, " +
+                       "    t.limite AS limite_tarjeta, " +
+                       "    c.nombre AS nombre_cliente, " +
+                       "    c.direccion AS direccion_cliente, " +
+                       "    t.fecha AS fecha_tarjeta, " +
+                       "    t.estado AS estado_tarjeta " +
+                       "FROM " +
+                       "    tarjeta t " +
+                       "JOIN " +
+                       "    solicitud s ON t.numero = s.numero_tarjeta " +
+                       "JOIN " +
+                       "    cliente c ON s.id_cliente = c.id";
+        
+        
+        try {
+            Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = stmt.executeQuery(query);
+            // Obtener el número de filas
+            rs.last();
+            int numRows = rs.getRow();
+            rs.beforeFirst();
+
+            // Número de columnas (12 columnas en el SELECT)
+            int numCols = 7;
+
+            // Inicializar la matriz con una fila adicional para los títulos
+            datos = new String[numRows + 1][numCols];
+
+            // Agregar los títulos en la primera fila (índice 0)
+            datos[0] = titulos;
+
+            int i = 1;  // Iniciar desde la fila 1 para insertar datos
+            while (rs.next()) {
+                datos[i][0] = rs.getString("numero_tarjeta");
+                datos[i][1] = rs.getString("tipo_tarjeta");
+                datos[i][2] = rs.getString("limite_tarjeta");
+                datos[i][3] = rs.getString("nombre_cliente");
+                datos[i][4] = rs.getString("direccion_cliente");
+                datos[i][5] = rs.getString("fecha_tarjeta");
+                datos[i][6] = rs.getString("estado_tarjeta");
+                i++;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return datos;
+    }
+    
     public String[][] estadoDeCuenta(String[] titulos){
         String[][] datos = null;
         
